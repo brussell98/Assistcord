@@ -1,7 +1,7 @@
 {
   "name": "autodiscord",
   "author": "Brandon Russell",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A client to automate tasks on Discord",
   "main": "main.js",
   "license": "MIT",
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "start": "electron main.js",
-	"package": "electron-packager ./ Discord-Status-Updater --platform=win32 --arch=x64  --version=0.36.7 --overwrite --ignore=node_modules/electron-packager,node_modules/electron-prebuilt"
+	"package": "electron-packager ./ AutoDiscord --platform=win32 --arch=x64 --icon=assets/icon.ico  --version=0.36.7 --overwrite --ignore=node_modules/electron-packager,node_modules/electron-prebuilt"
   },
   "dependencies": {
-    "discord.js": "hydranolt/discord.js#indev"
+    "discord.js": "hydrabolt/discord.js#indev"
   },
   "devDependencies": {
     "electron-packager": "^5.2.1",

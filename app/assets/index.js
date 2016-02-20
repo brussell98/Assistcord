@@ -1,30 +1,45 @@
-$(document).ready(function() {
-	document.addEventListener("keydown", function(key) {
-		if (key.which === 123) { require('remote').getCurrentWindow().toggleDevTools(); }
-	});
+var autoCount = 0;
+var loggedIn = false;
 
-	if (localStorage.getItem("discEmail") !== undefined) { document.getElementsByName("email")[0].value = localStorage.getItem("discEmail"); }
-	if (localStorage.getItem("discPass") !== undefined) { document.getElementsByName("pass")[0].value = localStorage.getItem("discPass"); }
+$(document).ready(function() {
+	if (localStorage.discEmail !== undefined) { document.getElementsByName("email")[0].value = localStorage.discEmail; }
+	if (localStorage.discPass !== undefined) { document.getElementsByName("pass")[0].value = localStorage.discPass; }
+
+	var autos = localStorage.autos;
+	if (autos) {
+		autos = JSON.parse(autos);
+		autos.forEach(function(auto) {
+			autoCount++;
+			$("#autos").append('<form id="auto' + auto.id + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + auto.id + '" value="' + auto.find + '" disabled><input class="forminput auto-replace" type="text" id="replace' + auto.id + '" value="' + auto.replace + '" disabled><input id="rem-auto-btn" name="auto' + auto.id + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
+		});
+	}
 
 	$(".form").on('submit', function(e) { e.preventDefault(); });
 });
 
 var discord = require("discord.js");
-
 var bot = new discord.Client();
 var auto = false, currentGame = "";
 
 bot.on("ready", () => {
 	$("#login").hide();
+	loggedIn = true;
 	document.getElementById("username").innerHTML = "Logged in as " + bot.user.username;
-	(bot.user.game !== null) ? document.getElementById("status").innerHTML = "Current Status: " + bot.user.game.name : document.getElementById("status").innerHTML = "Current Status: Nothing";
+	(bot.user.game !== null) ? document.getElementById("status").innerHTML = "Playing " + bot.user.game.name : document.getElementById("status").innerHTML = "Not Playing";
+
+	setInterval(() => { autoUpdate(); }, 30000);
 
 	setInterval(() => {
-		autoUpdate();
-	}, 30000);
+		if (currentGame !== "") { bot.setPlayingGame(currentGame); }
+	}, 120000);
 });
 
-bot.on("disconnected", () => { console.log("Lost connection to discord"); /* Display on screen */ });
+bot.on("disconnected", () => {
+	console.log("Lost connection to discord");
+	loggedIn = false;
+	auto = true;
+	/* Display on screen */
+});
 
 function login() {
 	if (document.getElementById("saveLogin").checked) {
@@ -41,7 +56,16 @@ function setStatus() {
 	if (toSet && toSet != currentGame) {
 		bot.setPlayingGame(toSet);
 		currentGame = toSet;
-		document.getElementById("status").innerHTML = "Current Status: " + toSet;
+		document.getElementById("status").innerHTML = "Playing " + toSet;
+	}
+}
+
+function clearStatus() {
+	if (loggedIn) {
+		console.log("Cleared game");
+		bot.setPlayingGame(null);
+		currentGame = "";
+		document.getElementById("status").innerHTML = "Not Playing";
 	}
 }
 
@@ -54,9 +78,7 @@ function toggleAuto() {
 }
 
 function autoUpdate() {
-	if (auto) {
-		getTasks();
-	}
+	if (auto) { getTasks(); }
 }
 
 function getTasks() {
@@ -64,15 +86,8 @@ function getTasks() {
 	var tl = spawn("tasklist", ["-v", "/fo", "csv"]);
 	var processes = [];
 
-	tl.stdout.on("data", (data) => {
-		processes.push(data);
-	});
-	tl.stderr.on("data", (data) => {
-		console.log(`stderr: ${data}`);
-	});
-	tl.on("close", (code) => {
-		checkForMatch(processes.join("").split("\r\n"));
-	});
+	tl.stdout.on("data", (data) => { processes.push(data); });
+	tl.on("close", (code) => { checkForMatch(processes.join("").split("\r\n")); });
 }
 
 function checkForMatch(list) {
@@ -102,4 +117,54 @@ function checkForMatch(list) {
 			}
 		}
 	}
+}
+
+function addReplace() {
+	var find = document.getElementsByName("find")[0].value;
+	var replace = document.getElementsByName("replace")[0].value;
+	if (find && replace) {
+		document.getElementsByName("find")[0].value = "";
+		document.getElementsByName("replace")[0].value = "";
+		autoCount++;
+		if (localStorage.autos) {
+			var autos = JSON.parse(localStorage.autos);
+			var obj = {id: autoCount, find: find, replace: replace};
+			autos.push(obj);
+			localStorage.autos = JSON.stringify(autos);
+		} else {
+			var autos = [];
+			var obj = {id: autoCount, find: find, replace: replace};
+			autos.push(obj);
+			localStorage.autos = JSON.stringify(autos);
+		}
+		$("#autos").append('<form id="auto' + autoCount + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + autoCount + '" value="' + find + '" disabled><input class="forminput auto-replace" type="text" id="replace' + autoCount + '" value="' + replace + '" disabled><input id="rem-auto-btn" name="auto' + autoCount + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
+	}
+}
+
+function remReplace(e) {
+	var autos = JSON.parse(localStorage.autos);
+	var eID = e.name.replace(/auto/, "");
+	autos.splice(parseInt(eID) - 1, 1);
+	for (var i = 0; i < autos.length; i++) {
+		if (autos[i].id > eID) { autos[i].id = autos[i].id - 1; }
+	}
+	$("#" + e.name).remove();
+	autoCount--;
+	localStorage.autos = JSON.stringify(autos);
+	$(".auto-find").each(function() {
+		var ID = parseInt(this.id.replace(/find/, ""));
+		if (ID > eID) { $(this).prop("id", "find" + (ID - 1)); }
+	});
+	$(".auto-form").each(function() {
+		var ID = parseInt(this.id.replace(/auto/, ""));
+		if (ID > eID) { $(this).prop("id", "auto" + (ID - 1)); }
+	});
+	$(".auto-replace").each(function() {
+		var ID = parseInt(this.id.replace(/replace/, ""));
+		if (ID > eID) { $(this).prop("id", "replace" + (ID - 1)); }
+	});
+	$(".auto-rem").each(function() {
+		var ID = parseInt(this.name.replace(/auto/, ""));
+		if (ID > eID) { $(this).prop("name", "auto" + (ID - 1)); }
+	});
 }

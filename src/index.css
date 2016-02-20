@@ -1,7 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,500);
 html {
-	overflow-y: scroll;
-	overflow-x: hidden;
+	overflow: hidden;
 	min-height: 100%;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
@@ -56,7 +55,6 @@ h3 {
 
 .status {
 	color: #fff;
-	font-weight: 500;
 	margin: 0;
 }
 
@@ -112,11 +110,55 @@ h3 {
 .status-card {
 	margin: 5px;
 	position: absolute;
-	width: 486px;
+	width: 504px;
 }
 
 .status-input {
 	width: 75% !important;
+}
+
+/*----------------------------------*\
+		    Automator CSS
+\*----------------------------------*/
+
+.auto-card {
+	margin: 5px;
+	position: absolute;
+	margin-top: 168px;
+	width: 975px;
+	height: 360px;
+}
+
+#add-auto-btn {
+	width: 35px;
+	border-radius: 25px !important;
+}
+
+#rem-auto-btn {
+	width: 35px;
+	border-radius: 25px !important;
+}
+
+.auto-find-input {
+	width: 250px !important;
+}
+
+.auto-replace-input {
+	width: 580px !important;
+}
+
+.auto-find {
+	width: 250px !important;
+	color: #0f0f0f;
+	outline: 0 !important;
+	border-bottom-color: #5677fc !important;
+}
+
+.auto-replace {
+	width: 580px !important;
+	color: #0f0f0f;
+	outline: 0 !important;
+	border-bottom-color: #5677fc !important;
 }
 
 /*----------------------------------*\
@@ -196,6 +238,7 @@ h3 {
 .login-card {
 	width: 360px;
 	margin: 5rem auto;
+	margin-top: 8rem;
 }
 
 .cardbanner,
@@ -277,4 +320,9 @@ h3 {
 
 .right {
 	float: right;
+}
+
+.scroll {
+	height: 270px;
+	overflow-y: scroll;
 }
