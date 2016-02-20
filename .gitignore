@@ -1,0 +1,7 @@
+node_modules/
+typings/
+*.eslintrc
+*.jscsrc
+*.tmp
+desktop.ini
+*.vscode

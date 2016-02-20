@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Discord Status Updater</title>
+	<link type="text/css" href="index.min.css" rel="stylesheet">
+	<script>window.$ = window.jQuery = require('./jquery-2.2.0.min.js');</script>
+	<script type="text/javascript" src="index.js"></script>
+	<style>
+		body { font-family: Verdana, Geneva, Tahoma, sans-serif; background-color: #fff; }
+		h1 { font-size: 24px; text-align: center; }
+	</style>
+</head>
+<body>
+	<div id="login">
+	<div class="card login-card">
+		<h3 class="cardbanner cardtitle">Log in to Discord</h3>
+		<div class="cardbody">
+			<form class="form">
+				<input class="forminput" type="email" name="email" placeholder="Email" required>
+				<input class="forminput" type="password" name="pass" placeholder="Password" required>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="saveLogin" checked>
+					<label class="onoffswitch-label" for="saveLogin"></label>
+				</div><p class="switch-text">Save Login</p>
+				<input class="right btn btn-flat" type="submit" value="Log In" onclick="login();this.blur();">
+			</form>
+		</div>
+	</div>
+	</div>
+	
+	<div class="set-status">
+	<div class="card status-card">
+		<h3 class="cardbanner cardtitle">Set Status</h3>
+		<div class="cardbody">
+			<form class="form">
+				<input class="forminput status-input" type="text" name="status" placeholder="Status" required>
+				<button id="update-status-btn" class="right btn btn-blue" onclick="setStatus();this.blur();">Update</button>
+			</form>
+		</div>
+	</div>
+	</div>
+	
+	<div class="watching">
+	<div class="card watching-card">
+		<h3 class="cardbanner cardtitle">What I'm Watching</h3>
+		<div class="cardbody">
+			<div class="onoffswitch">
+				<input type="checkbox" onchange="toggleAuto()" name="onoffswitch" class="onoffswitch-checkbox" id="toggleAuto">
+				<label class="onoffswitch-label" for="toggleAuto"></label>
+			</div>
+			<select id="player" class="material-select">
+				<option value="" disabled selected>Select Player</option>
+				<option value="0">MPC-HC</option>
+			</select>
+			<button id="watching-btn" class="right btn btn-blue" onclick="autoUpdate();this.blur();">Update Now</button>
+		</div>
+	</div>
+	</div>
+	
+	<div class="status-bar">
+		<p class="status currentname" id="username">Logged in as Nobody</p>
+		<p class="status current" id="status">Not Playing</p>
+	</div>
+  </body>
+</html>
