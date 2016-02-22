@@ -8,20 +8,25 @@ To do before beta release
 
 - [x] Make login appear first and then change to actual stuff on login
 - [x] Custom status entry
-- [x] Keep updating every 2 minutes to make sure it stays that 
+- [x] Keep updating every 2 minutes to make sure it stays that
 - [x] What I'm watching
 - [x] Make it look nice
 - [x] Clear status
 - [ ] Lost connection handled
-- [ ] Settings -- *through right-click for now*
 
 To do after beta release
 
 - [ ] Add help/info section
 - [ ] Add Automation module
+- [ ] Dark theme
+- [ ] Settings -- *through right-click for now*
+- [ ] eval command (`*eval bot.servers.length`)
+- [ ] replace command (maybe `*show>should` would replace "show" in the previous message with "should")
+- [ ] Stats command (`*stats`)
+- [ ] Match exact modifier for autos (`e*`)
+- [ ] All of those above can be changed in settings
+- [ ] Simple delete command (`*delete 12`)
 
 Bugs
 
-- [x] `Name` in the button to remove autos doesn't get updated
-- [x] `autos` in `localStorage` doesn't get updater with new ids
-- [ ] @BlackHayate reported 2 reference errors waiting on what they were
+- [x] Replace `"` in the auto's input values with `&quot;` so it works

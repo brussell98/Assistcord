@@ -10,7 +10,7 @@ $(document).ready(function() {
 		autos = JSON.parse(autos);
 		autos.forEach(function(auto) {
 			autoCount++;
-			$("#autos").append('<form id="auto' + auto.id + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + auto.id + '" value="' + auto.find + '" disabled><input class="forminput auto-replace" type="text" id="replace' + auto.id + '" value="' + auto.replace + '" disabled><input id="rem-auto-btn" name="auto' + auto.id + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
+			$("#autos").append('<form id="auto' + auto.id + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + auto.id + '" value="' + auto.find.replace(/"/g, "&quot;") + '" disabled><input class="forminput auto-replace" type="text" id="replace' + auto.id + '" value="' + auto.replace.replace(/"/g, "&quot;") + '" disabled><input id="rem-auto-btn" name="auto' + auto.id + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
 		});
 	}
 
@@ -21,23 +21,23 @@ var discord = require("discord.js");
 var bot = new discord.Client();
 var auto = false, currentGame = "";
 
-bot.on("ready", () => {
+bot.on("ready", function() {
 	$("#login").hide();
 	loggedIn = true;
 	document.getElementById("username").innerHTML = "Logged in as " + bot.user.username;
 	(bot.user.game !== null) ? document.getElementById("status").innerHTML = "Playing " + bot.user.game.name : document.getElementById("status").innerHTML = "Not Playing";
 
-	setInterval(() => { autoUpdate(); }, 30000);
+	setInterval(function() { autoUpdate(); }, 30000);
 
-	setInterval(() => {
+	setInterval(function() {
 		if (currentGame !== "") { bot.setPlayingGame(currentGame); }
 	}, 120000);
 });
 
-bot.on("disconnected", () => {
+bot.on("disconnected", function() {
 	console.log("Lost connection to discord");
 	loggedIn = false;
-	auto = true;
+	auto = false;
 	/* Display on screen */
 });
 
@@ -86,8 +86,8 @@ function getTasks() {
 	var tl = spawn("tasklist", ["-v", "/fo", "csv"]);
 	var processes = [];
 
-	tl.stdout.on("data", (data) => { processes.push(data); });
-	tl.on("close", (code) => { checkForMatch(processes.join("").split("\r\n")); });
+	tl.stdout.on("data", function(data) { processes.push(data); });
+	tl.on("close", function(code) { checkForMatch(processes.join("").split("\r\n")); });
 }
 
 function checkForMatch(list) {
@@ -137,7 +137,7 @@ function addReplace() {
 			autos.push(obj);
 			localStorage.autos = JSON.stringify(autos);
 		}
-		$("#autos").append('<form id="auto' + autoCount + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + autoCount + '" value="' + find + '" disabled><input class="forminput auto-replace" type="text" id="replace' + autoCount + '" value="' + replace + '" disabled><input id="rem-auto-btn" name="auto' + autoCount + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
+		$("#autos").append('<form id="auto' + autoCount + '" class="form auto-form"><input class="forminput auto-find" type="text" id="find' + autoCount + '" value="' + find.replace(/"/g, "&quot;") + '" disabled><input class="forminput auto-replace" type="text" id="replace' + autoCount + '" value="' + replace.replace(/"/g, "&quot;") + '" disabled><input id="rem-auto-btn" name="auto' + autoCount + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"></form>');
 	}
 }
 

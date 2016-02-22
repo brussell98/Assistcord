@@ -11,6 +11,6 @@ app.on('ready', function() {
 	window.loadURL('file://' + __dirname + '/assets/index.html');
 });
 
-app.on('closed', function() {
+app.on('window-all-closed', function() {
 	app.quit();
 });
