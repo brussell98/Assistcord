@@ -26,6 +26,8 @@ To do after beta release
 - [ ] Match exact modifier for autos (`e*`)
 - [ ] All of those above can be changed in settings
 - [ ] Simple delete command (`*delete 12`)
+- [ ] Encrypt passwords so they're at least not plain text
+- [ ] Log usernames so you can check detected past usernames (`*names @Brussell`)
 
 Bugs
 

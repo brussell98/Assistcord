@@ -103,7 +103,7 @@ function checkForMatch(list) {
 			if (e.selectedIndex == 1 && list[i].startsWith("\"mpc-hc.exe")) {
 				if (/:\d\d",".+"$/.exec(list[i]) !== null) {
 					var title = /:\d\d",".+"$/.exec(list[i])[0].substr(6).replace(/"$/, "");
-					if (title !== "N/A") {
+					if (title != "N/A" && title != "Media Player Classic Home Cinema") {
 						title = title.replace(/\[[^\]]+\]/g, "").replace(/_/g, " ").replace(/\.[a-zA-Z]{3,5}$/, "").trim();
 						if (title != currentGame) {
 							bot.setPlayingGame(title);
@@ -111,7 +111,21 @@ function checkForMatch(list) {
 							currentGame = title;
 							document.getElementById("status").innerHTML = "Playing " + title;
 							i = list.length + 1;
-						} else { i = list.length + 1; }
+						} else i = list.length + 1;
+					}
+				}
+			} else if (e.selectedIndex == 2 && list[i].startsWith("\"vlc.exe")) {
+				if (/:\d\d",".+ - VLC media player"$/.exec(list[i]) !== null) {
+					var title = /:\d\d",".+ - VLC media player"$/.exec(list[i])[0].substr(6).replace(/"$/, "");
+					if (title != "N/A" && title != "VLC media player") {
+						title = title.replace(/\[[^\]]+\]/g, "").replace(/_/g, " ").replace(/\.[a-zA-Z]{3,5} - VLC media player$/, "").trim();
+						if (title != currentGame) {
+							bot.setPlayingGame(title);
+							console.log(title);
+							currentGame = title;
+							document.getElementById("status").innerHTML = "Playing " + title;
+							i = list.length + 1;
+						} else i = list.length + 1;
 					}
 				}
 			}
