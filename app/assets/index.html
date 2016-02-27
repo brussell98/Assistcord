@@ -7,6 +7,7 @@
 	<script>window.$ = window.jQuery = require('./jquery-2.2.0.min.js');</script>
 	<script type="text/javascript" src="index.min.js"></script>
 	<script type="text/javascript" src="contextmenu.min.js"></script>
+	<script src="CryptoJS/rollups/aes.js"></script>
 </head>
 <body>
 	<div id="login">
@@ -20,10 +21,11 @@
 					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="saveLogin" checked>
 					<label class="onoffswitch-label" for="saveLogin"></label>
 				</div><p class="switch-text">Save Login</p>
-				<input class="right btn btn-flat" type="submit" value="Log In" onclick="login();this.blur();">
+				<input id="login-btn" class="right btn btn-flat" type="submit" value="Log In" onclick="login();">
 			</form>
 		</div>
 	</div>
+	<p class="login-info"></p>
 	</div>
 
 	<div class="set-status">

@@ -1,9 +1,10 @@
-var autoCount = 0;
-var loggedIn = false;
+var autoCount = 0
+	,loggedIn = false
+	,loggingIn = false;
 
 $(document).ready(function() {
-	if (localStorage.discEmail !== undefined) { document.getElementsByName("email")[0].value = localStorage.discEmail; }
-	if (localStorage.discPass !== undefined) { document.getElementsByName("pass")[0].value = localStorage.discPass; }
+	if (localStorage.discEmail !== undefined) { document.getElementsByName("email")[0].value = CryptoJS.AES.decrypt(localStorage.discEmail, "asgvkf4yut584fq8hbw").toString(CryptoJS.enc.Utf8); }
+	if (localStorage.discPass !== undefined) { document.getElementsByName("pass")[0].value = CryptoJS.AES.decrypt(localStorage.discPass, "asgvkf4yut584fq8hbw").toString(CryptoJS.enc.Utf8); }
 
 	var autos = localStorage.autos;
 	if (autos) {
@@ -23,6 +24,7 @@ var auto = false, currentGame = "";
 
 bot.on("ready", function() {
 	$("#login").hide();
+	loggingIn = false;
 	loggedIn = true;
 	document.getElementById("username").innerHTML = "Logged in as " + bot.user.username;
 	(bot.user.game !== null) ? document.getElementById("status").innerHTML = "Playing " + bot.user.game.name : document.getElementById("status").innerHTML = "Not Playing";
@@ -35,20 +37,32 @@ bot.on("ready", function() {
 });
 
 bot.on("disconnected", function() {
-	console.log("Lost connection to discord");
-	loggedIn = false;
-	auto = false;
-	/* Display on screen */
+	if (loggedIn) {
+		console.log("Lost connection to discord");
+		loggedIn = false;
+		auto = false;
+		document.getElementsByClassName('login-info')[0].innerHTML = "Lost connection";
+		$('#login').show();
+	}
 });
 
 function login() {
+	if (!loggingIn) {
+	loggingIn = true;
 	if (document.getElementById("saveLogin").checked) {
-		localStorage.setItem("discEmail", document.getElementsByName("email")[0].value);
-		localStorage.setItem("discPass", document.getElementsByName("pass")[0].value);
+		localStorage.setItem("discEmail", CryptoJS.AES.encrypt(document.getElementsByName("email")[0].value, "asgvkf4yut584fq8hbw"));
+		localStorage.setItem("discPass", CryptoJS.AES.encrypt(document.getElementsByName("pass")[0].value, "asgvkf4yut584fq8hbw"));
 	}
 	var email = document.getElementsByName("email")[0].value;
 	var pass = document.getElementsByName("pass")[0].value;
-	bot.login(email, pass);
+	bot.login(email, pass, function(error, token) {
+		if (error) {
+			document.getElementsByClassName('login-info')[0].innerHTML = "Failed: Either your email or password is incorrect";
+			$('#login-btn').blur();
+			loggingIn = false;
+		}
+	});
+	}
 }
 
 function setStatus() {

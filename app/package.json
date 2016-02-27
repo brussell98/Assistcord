@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "electron main.js",
-	"package": "electron-packager ./ AutoDiscord --platform=win32 --arch=x64 --icon=assets/icon.ico  --version=0.36.7 --overwrite --ignore=node_modules/electron-packager,node_modules/electron-prebuilt"
+	"package": "electron-packager ./ AutoDiscord --platform=win32 --arch=x64 --icon=assets/icon.ico  --version=0.36.9 --overwrite --ignore=node_modules/electron-packager,node_modules/electron-prebuilt"
   },
   "dependencies": {
     "discord.js": "hydrabolt/discord.js#indev"

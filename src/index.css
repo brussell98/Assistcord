@@ -257,7 +257,7 @@ h3 {
 	position: relative;
 	width: 48px;
 	-webkit-user-select: none;
-	margin-top: 1.6rem;
+	margin-top: 1.1rem;
 	margin-left: 0.6rem;
 	float: left;
 }
@@ -311,9 +311,24 @@ h3 {
 	box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
 }
 
+#login-btn {
+	padding: 1rem;
+	margin: .2rem;
+	margin-bottom: 1rem;
+}
+
+.login-info {
+	position: absolute;
+	top: 400px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: red;
+}
+
 .switch-text {
 	float: left;
-	margin-top: 1.6rem;
+	margin-top: 1.1rem;
 	margin-left: 1rem;
 	color: #969696;
 }
