@@ -9,8 +9,8 @@ menu.append(new MenuItem({ label: 'Clear game', click: function() {
 menu.append(new MenuItem({ label: 'Show dev tools', click: function() {
 	remote.getCurrentWindow().toggleDevTools();
 } }));
-menu.append(new MenuItem({ label: 'Dark theme', type: 'checkbox', click: function() {
-	console.log("Dark theme not yet avalible");
+menu.append(new MenuItem({ label: 'Toggle theme', click: function() {
+	toggleDarkTheme();
 } }));
 menu.append(new MenuItem({ type: 'separator' }));
 menu.append(new MenuItem({ label: 'Settings', click: function() {
