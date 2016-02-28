@@ -1,7 +1,8 @@
 var autoCount = 0
 	,loggedIn = false
 	,loggingIn = false
-	,dark = false;
+	,dark = false
+	,replaces = [];
 
 $(document).ready(function() {
 	if (localStorage.darkTheme !== undefined) { if (localStorage.darkTheme) toggleDarkTheme(); }
@@ -17,6 +18,7 @@ $(document).ready(function() {
 		autos.forEach(function(auto) {
 			autoCount++;
 			$("#autos").append('<form id="auto' + auto.id + '" class="form auto-form"><input class="forminput auto-find' + autosDark + '" type="text" id="find' + auto.id + '" value="' + auto.find.replace(/"/g, "&quot;") + '"' + autosDark1 + ' disabled><input class="forminput auto-replace" type="text" id="replace' + auto.id + '" value="' + auto.replace.replace(/"/g, "&quot;") + '"' + autosDark1 + ' disabled><input id="rem-auto-btn" name="auto' + auto.id + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"' + autosDark2 + '></form>');
+			replaces.push({"find": auto.find, "replace": auto.replace});
 		});
 	}
 
@@ -68,6 +70,24 @@ function login() {
 		}
 	});
 	}
+}
+
+bot.on("message", function(msg) {
+	if (msg.author.id != bot.user.id) return;
+	if (replaces.length !== 0) replaceMessage(msg);
+});
+
+function replaceMessage(msg) {
+	var changed = false;
+	var updated = msg.content;
+	replaces.forEach(function(replacer) {
+		if (updated.indexOf(replacer.find) > -1) {
+			var findRegExp = new RegExp(replacer.find, "g");
+			updated = updated.replace(findRegExp, replacer.replace);
+			changed = true;
+		}
+	});
+	if (changed) bot.updateMessage(msg, updated, function(error) { if (error) console.log("Error updating message: " + error.stack); });
 }
 
 function setStatus() {
@@ -174,6 +194,7 @@ function addReplace() {
 		var autosDark1 = (localStorage.darkTheme) ? ' style="border-bottom-width: 1px !important; border-bottom-style: solid !important; border-bottom-color: rgb(25, 118, 210) !important; color: rgb(245, 245, 245) !important;"' : '';
 		var autosDark2 = (localStorage.darkTheme) ? ' style="color: rgb(245, 245, 245); background-color: rgb(25, 118, 210);"' : '';
 		$("#autos").append('<form id="auto' + autoCount + '" class="form auto-form"><input class="forminput auto-find' + autosDark + '" type="text" id="find' + autoCount + '" value="' + find.replace(/"/g, "&quot;") + '""' + autosDark1 + '" disabled><input class="forminput auto-replace" type="text" id="replace' + autoCount + '" value="' + replace.replace(/"/g, "&quot;") + '"' + autosDark1 + ' disabled><input id="rem-auto-btn" name="auto' + autoCount + '" class="right btn btn-blue auto-rem" type="submit" value="-" onclick="event.preventDefault();remReplace(this);this.blur();"' + autosDark2 + '></form>');
+		replaces.push({"find": find, "replace": replace});
 	}
 }
 
@@ -181,6 +202,7 @@ function remReplace(e) {
 	var autos = JSON.parse(localStorage.autos);
 	var eID = e.name.replace(/auto/, "");
 	autos.splice(parseInt(eID) - 1, 1);
+	replaces.splice(parseInt(eID) - 1, 1);
 	for (var i = 0; i < autos.length; i++) {
 		if (autos[i].id > eID) { autos[i].id = autos[i].id - 1; }
 	}
