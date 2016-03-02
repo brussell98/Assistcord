@@ -2,7 +2,11 @@ var autoCount = 0
 	,loggedIn = false
 	,loggingIn = false
 	,dark = false
-	,replaces = [];
+	,replaces = []
+	,watchingTimer
+	,gameUpdaterTimer
+	,auto = false
+	,currentGame = "";
 
 $(document).ready(function() {
 	if (localStorage.darkTheme !== undefined) { if (localStorage.darkTheme) toggleDarkTheme(); }
@@ -27,18 +31,15 @@ $(document).ready(function() {
 
 var discord = require("discord.js");
 var bot = new discord.Client();
-var auto = false, currentGame = "";
 
 bot.on("ready", function() {
 	$("#login").hide();
 	loggingIn = false;
 	loggedIn = true;
 	document.getElementById("username").innerHTML = "Logged in as " + bot.user.username;
-	(bot.user.game !== null) ? document.getElementById("status").innerHTML = "Playing " + bot.user.game.name : document.getElementById("status").innerHTML = "Not Playing";
-
-	setInterval(function() { autoUpdate(); }, 30000);
-
-	setInterval(function() {
+	(currentGame != "") ? document.getElementById("status").innerHTML = "Playing " + currentGame : document.getElementById("status").innerHTML = "Not Playing";
+	watchingTimer = setInterval(function() { autoUpdate(); }, 30000);
+	gameUpdaterTimer = setInterval(function() {
 		if (currentGame !== "") { bot.setPlayingGame(currentGame); }
 	}, 120000);
 });
@@ -48,6 +49,8 @@ bot.on("disconnected", function() {
 		console.log("Lost connection to discord");
 		loggedIn = false;
 		auto = false;
+		clearInterval(watchingTimer);
+		clearInterval(gameUpdaterTimer);
 		document.getElementsByClassName('login-info')[0].innerHTML = "Lost connection";
 		$('#login').show();
 	}

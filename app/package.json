@@ -1,7 +1,7 @@
 {
-  "name": "autodiscord",
+  "name": "AutoDiscord",
   "author": "Brandon Russell",
-  "version": "0.3.0",
+  "version": "0.6.0",
   "description": "A client to automate tasks on Discord",
   "main": "main.js",
   "license": "MIT",
