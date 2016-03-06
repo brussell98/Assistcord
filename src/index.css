@@ -118,7 +118,7 @@ h3 {
 }
 
 /*----------------------------------*\
-		    Automator CSS
+		    	Bot CSS
 \*----------------------------------*/
 
 .auto-card {
@@ -159,6 +159,15 @@ h3 {
 	color: #0f0f0f;
 	outline: 0 !important;
 	border-bottom-color: #5677fc !important;
+}
+
+#bot-settings-btn {
+	color: #1976d2;
+	background-color: #f5f5f5;
+	position: absolute;
+	margin-left: 840px;
+	margin-top: -45px;
+	width: 125px;
 }
 
 /*----------------------------------*\
