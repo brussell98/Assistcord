@@ -306,38 +306,28 @@ h3 {
 	box-shadow: 0 6px 12px 0px rgba(0, 0, 0, 0.2);
 }
 
-.onoffswitch-checkbox:checked + .onoffswitch-label {
-	background-color: #4B6BFA;
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label,
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
-	border-color: #4B6BFA;
-}
-
-.onoffswitch-checkbox.dark:checked + .onoffswitch-label.dark {
-	background-color: #1976d2;
-}
-
-.onoffswitch-checkbox.dark:checked + .onoffswitch-label.dark,
-.onoffswitch-checkbox.dark:checked + .onoffswitch-label.dark:before {
-	border-color: #1976d2;
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+.onoffswitch-checkbox:checked + label {
 	margin-left: 0;
 }
 
-.onoffswitch-checkbox:checked + .onoffswitch-label:before {
+.onoffswitch-checkbox:checked + label:before {
 	right: 0px;
-	background-color: #5677FC;
+	background-color: #5677FC; /*Circle Light*/
 	box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
 }
 
-.onoffswitch-checkbox.dark:checked + .onoffswitch-label.dark:before {
+.onoffswitch-checkbox.dark:checked + label.dark:before {
 	right: 0px;
-	background-color: #1565c0;
+	background-color: #1976d2; /*Circle Dark*/
 	box-shadow: 3px 6px 18px 0px rgba(0, 0, 0, 0.2);
+}
+
+.onoffswitch-checkbox:checked + label:not(.dark) {
+	background-color: #4B6BFA; /*Bar Light*/
+}
+
+.onoffswitch-checkbox.dark:checked + label.dark {
+	background-color: #1565c0; /*Bar Dark*/
 }
 
 #login-btn {

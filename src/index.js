@@ -124,6 +124,7 @@ function autoUpdate() {
 }
 
 function getTasks() {
+	if (document.getElementById("player").selectedIndex <= 0) return;
 	var spawn = require("child_process").spawn;
 	var tl = spawn("tasklist", ["-v", "/fo", "csv"]);
 	var processes = [];
