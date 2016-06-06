@@ -1,3 +1,7 @@
+# No longer maintained. Running bots under user accounts is not recommended.
+
+### Do not use.
+
 ## AutoDiscord Beta 1
 
 ### Author: brussell98
